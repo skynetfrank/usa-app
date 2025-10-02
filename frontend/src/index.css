@@ -1,0 +1,368 @@
+/* 
+  Esquema de Theming con Variables CSS
+  - Tema claro (light) es el predeterminado.
+  - Tema oscuro (dark) se activa con el atributo data-theme="dark" en el elemento <html> o <body>.
+*/
+
+:root {
+  /* Tema Claro (Predeterminado) */
+
+  /* Paleta de colores */
+  --primary-color: #007bff;
+  /* Un azul vibrante para elementos principales */
+  --secondary-color: #6c757d;
+  /* Un gris para elementos secundarios */
+
+  /* Colores base de la UI */
+  --background-color: #f8f9fa;
+  /* Fondo general de la página */
+  --surface-color: #ffffff;
+  /* Fondo para tarjetas, modales, etc. */
+  --text-color: #212529;
+  /* Color del texto principal */
+  --text-muted-color: #6c757d;
+  /* Color para texto secundario o silenciado */
+  --border-color: #dee2e6;
+  /* Color para bordes y separadores */
+
+  /* Transiciones */
+  --transition-speed: 0.3s;
+}
+
+[data-theme='dark'] {
+  /* Tema Oscuro */
+
+  /* Paleta de colores */
+  --primary-color: #0d6efd;
+  /* Un azul ligeramente diferente para el modo oscuro */
+  --secondary-color: #adb5bd;
+  /* Un gris más claro */
+
+  /* Colores base de la UI */
+  --background-color: #121212;
+  /* Fondo oscuro, estándar en Material Design */
+  --surface-color: #1e1e1e;
+  /* Superficies ligeramente más claras que el fondo */
+  --text-color: #e9ecef;
+  /* Texto claro para un buen contraste */
+  --text-muted-color: #adb5bd;
+  /* Texto secundario */
+  --border-color: #495057;
+  /* Bordes más sutiles */
+}
+
+/* Estilos base para aplicar el tema */
+body {
+  min-height: 100vh;
+  display: grid;
+  /* Mobile-first: Una sola columna por defecto */
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  /* Header y Footer auto, Main ocupa el resto */
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  margin: 0;
+  /* Resetea el margen por defecto del body */
+}
+
+/* Ejemplo de uso en un componente */
+.card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+/* Asignación de áreas del Grid a los elementos semánticos */
+header {
+  grid-area: header;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+/* La barra lateral está oculta en pantallas pequeñas por defecto */
+.sidebar {
+  display: none;
+  grid-area: sidebar;
+  padding: 1.5rem;
+}
+
+main {
+  grid-area: main;
+}
+
+/* Contenedor dentro de main para padding y max-width */
+.main-content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+footer {
+  grid-area: footer;
+  background-color: var(--surface-color);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  color: var(--text-muted-color);
+}
+
+/* Media Query para pantallas grandes (Desktop) */
+@media (min-width: 992px) {
+  body {
+    /* Layout de 2 columnas: sidebar + contenido principal */
+    grid-template-columns: 260px 1fr;
+    /* Ancho fijo para sidebar, resto para main */
+    grid-template-areas:
+      "header  header"
+      "sidebar main"
+      "footer  footer";
+  }
+
+  .sidebar {
+    display: block;
+    /* Mostramos la barra lateral */
+    border-right: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+  }
+}
+
+/* Estilos para el componente Header */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  /* Limita el ancho del contenido del header */
+  margin: 0 auto;
+  /* Centra el contenedor */
+  padding: 1rem 2rem;
+  /* Espaciado interno */
+}
+
+.header-title {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--primary-color);
+}
+
+.header-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-button {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-speed) ease;
+}
+
+/* Estilos para botones que solo contienen un icono */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  /* Lo hace circular */
+}
+
+.theme-button:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+  /* Esto cambia el color del SVG a blanco en hover */
+}
+
+/* Estilos para el menú de usuario */
+.user-menu-container {
+  position: relative;
+}
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dropdown-item:hover {
+  background-color: var(--background-color);
+}
+
+/* Estilo genérico para botones primarios */
+.button-primary {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.button-primary:hover {
+  opacity: 0.85;
+}
+
+/* Estilos para Formularios (Signin/Register) */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 4rem;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-title {
+  text-align: center;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 3rem;
+  /* Espacio para el icono */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color var(--transition-speed) ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-muted-color);
+}
+
+.password-toggle-button {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted-color);
+  padding: 0.5rem;
+}
+
+.form-submit-button {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+}
+
+.form-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.form-link {
+  text-align: center;
+  color: var(--text-muted-color);
+}
+
+.form-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-link a:hover {
+  text-decoration: underline;
+}
