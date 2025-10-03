@@ -20,24 +20,17 @@ export const usersApi = createApi({
     getUsers: build.query({
       query: () => "/users",
     }),
-    getVendedores: build.query({
-      query: () => "/users/vendedores",
-    }),
     getUser: build.query({
       query: (id) => `/user/${id}`,
     }),
     registerUser: build.mutation({
-      query: (nombre, rif, email, celular, direccion, canal, timestamp) => ({
+      query: (nombre, email, password) => ({
         url: "/users/register",
         method: "POST",
         body: {
           nombre,
-          rif,
           email,
-          celular,
-          direccion,
-          canal,
-          timestamp,
+          password
         },
       }),
       invalidatesTags: ["Users"], // Invalidate the 'Users' tag to refetch the list after registration
@@ -47,4 +40,4 @@ export const usersApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUsersQuery, useGetUserQuery, useRegisterUserMutation,useGetVendedoresQuery } = usersApi;
+export const { useGetUsersQuery, useGetUserQuery, useRegisterUserMutation, useGetVendedoresQuery } = usersApi;

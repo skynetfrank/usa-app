@@ -3,16 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
 import { register } from "../actions/userActions";
 import { USER_REGISTER_RESET } from "../constants/userConstants";
-import { User, Mail, Lock, Eye, EyeOff, LogIn, Phone, Fingerprint } from "lucide-react";
-import logo from "../assets/logo.png";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function RegisterScreen() {
   const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [cedula, setCedula] = useState("");
   const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +29,7 @@ export default function RegisterScreen() {
       setMessage("Las contraseñas no coinciden");
     } else {
       setMessage(null);
-      dispatch(register(nombre, email, apellido, cedula, password, telefono));
+      dispatch(register(nombre, email, password));
     }
   };
   useEffect(() => {
@@ -53,25 +49,13 @@ export default function RegisterScreen() {
   }, [dispatch, error]);
 
   return (
-    <div className="signin-container">
-      <form className="signin-form" onSubmit={submitHandler} style={{ gap: "1rem" }}>
-        <img src={logo} alt="Logo" className="signin-logo" />
-        <h2>Crear Cuenta</h2>
+    <div className="form-container">
+      <form className="form-card" onSubmit={submitHandler}>
+        <h2 className="form-title">Crear Cuenta</h2>
 
         <div className="input-group">
           <User className="input-icon" />
           <input type="text" placeholder="Nombre" required value={nombre} onChange={(e) => setNombre(e.target.value)} />
-        </div>
-
-        <div className="input-group">
-          <User className="input-icon" />
-          <input
-            type="text"
-            placeholder="Apellido"
-            required
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
-          />
         </div>
 
         <div className="input-group">
@@ -88,7 +72,7 @@ export default function RegisterScreen() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+          <button type="button" className="password-toggle-button" onClick={() => setShowPassword(!showPassword)}>
             {showPassword ? <EyeOff /> : <Eye />}
           </button>
         </div>
@@ -104,41 +88,22 @@ export default function RegisterScreen() {
           />
           <button
             type="button"
-            className="password-toggle"
+            className="password-toggle-button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? <EyeOff /> : <Eye />}
           </button>
         </div>
 
-        <div className="input-group">
-          <Fingerprint className="input-icon" />
-          <input type="text" placeholder="Cédula" required value={cedula} onChange={(e) => setCedula(e.target.value)} />
-        </div>
-
-        <div className="input-group">
-          <Phone className="input-icon" />
-          <input
-            type="text"
-            placeholder="Teléfono"
-            required
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
-          />
-        </div>
-
         {/* Muestra el error del servidor o el de la validación local */}
-        {(error || message) && <p className="signin-error">{error || message}</p>}
+        {(error || message) && <div className="form-error">{error || message}</div>}
 
-        <div className="form-actions">
-          <button type="submit" className="signin-button" disabled={loading}>
-            {loading ? <div className="spinner"></div> : <LogIn />}
-            <span>{loading ? "Registrando..." : "Registrar"}</span>
-          </button>
-        </div>
+        <button type="submit" className="button-primary form-submit-button" disabled={loading}>
+          {loading ? "Registrando..." : "Crear Cuenta"}
+        </button>
 
-        <div className="signin-footer">
-          <span>¿Ya tienes una cuenta? </span>
+        <div className="form-link">
+          ¿Ya tienes una cuenta?{" "}
           <Link to={`/signin?redirect=${redirect}`}>Inicia Sesión</Link>
         </div>
       </form>

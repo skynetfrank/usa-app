@@ -41,16 +41,13 @@ export const listUsers = () => async (dispatch, getState) => {
   }
 };
 
-export const register = (nombre, email, apellido, cedula, password, telefono) => async (dispatch) => {
-  dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password } });
+export const register = (nombre, email, password) => async (dispatch) => {
+  dispatch({ type: USER_REGISTER_REQUEST, payload: { nombre, email, password } });
   try {
     const { data } = await Axios.post("/api/users/register", {
       nombre,
       email,
-      apellido,
-      cedula,
       password,
-      telefono,
     });
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });

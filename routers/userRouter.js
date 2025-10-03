@@ -16,16 +16,6 @@ userRouter.get(
   })
 );
 
-userRouter.get(
-  "/vendedores",
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const users = await User.find({ isVendedor: true }, { _id: 1, nombre: 1, apellido: 1 }).sort({ nombre: 1 });
-    res.send(users);
-  })
-);
-
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
@@ -36,12 +26,9 @@ userRouter.post(
           _id: user._id,
           nombre: user.nombre,
           apellido: user.apellido,
-          cedula: user.cedula,
           email: user.email,
           password: user.password,
-          telefono: user.telefono,
           isAdmin: user.isAdmin,
-          isVendedor: user.isVendedor,
           isActivo: true,
           token: generateToken(user),
         });
@@ -57,24 +44,16 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     const user = new User({
       nombre: req.body.nombre,
-      apellido: req.body.apellido,
-      cedula: req.body.cedula,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8),
-      telefono: req.body.telefono,
-      isVendedor: true,
-      isAdmin: false,
+      isAdmin: true,
     });
     const createdUser = await user.save();
     res.send({
       _id: createdUser._id,
       nombre: createdUser.nombre,
-      apellido: createdUser.apellido,
-      cedula: createdUser.cedula,
       email: createdUser.email,
-      telefono: createdUser.telefono,
       isAdmin: createdUser.isAdmin,
-      isVendedor: createdUser.isVendedor,
       token: generateToken(createdUser),
     });
   })
