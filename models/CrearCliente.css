@@ -87,14 +87,6 @@
   background-color: var(--primary-hover-color);
 }
 
-.nueva-cuenta-form {
-  background-color: var(--light-gray-color);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 1.5rem;
-  border: 1px solid var(--medium-gray-color);
-}
-
 .nueva-cuenta-form h3 {
   margin-top: 0;
   margin-bottom: 1rem;

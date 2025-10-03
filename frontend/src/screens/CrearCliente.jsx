@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Modal from "../components/Modal"; // Importamos el nuevo componente Modal
+import "../components/Modal.css"; // Importamos los estilos del Modal
 
 // Iconos (ejemplo usando SVG como componentes de React)
 const AddIcon = () => (
@@ -104,6 +106,7 @@ const CrearCliente = () => {
       alert("¡Cliente creado con éxito!");
       // Opcional: resetear formulario o redirigir
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Error en la petición:", error);
       alert(`Error: ${error.message}`);
     }
@@ -150,44 +153,6 @@ const CrearCliente = () => {
             </button>
           </div>
 
-          {mostrandoFormularioCuenta && (
-            <div className="nueva-cuenta-form">
-              <h3>Nueva Cuenta</h3>
-              <div className="form-grid">
-                <input
-                  name="email"
-                  value={nuevaCuenta.email}
-                  onChange={handleCuentaChange}
-                  placeholder="Email de la cuenta"
-                  required
-                />
-                <input
-                  name="zipCode"
-                  value={nuevaCuenta.zipCode}
-                  onChange={handleCuentaChange}
-                  placeholder="Zip Code"
-                />
-                <input name="ciudad" value={nuevaCuenta.ciudad} onChange={handleCuentaChange} placeholder="Ciudad" />
-                <input name="asesor" value={nuevaCuenta.asesor} onChange={handleCuentaChange} placeholder="Asesor" />
-                <input
-                  type="number"
-                  name="vendido"
-                  value={nuevaCuenta.vendido}
-                  onChange={handleCuentaChange}
-                  placeholder="Vendido ($)"
-                />
-              </div>
-              <div className="nueva-cuenta-actions">
-                <button type="button" onClick={agregarCuenta} className="btn-primary">
-                  Confirmar
-                </button>
-                <button type="button" onClick={() => setMostrandoFormularioCuenta(false)} className="btn-secondary">
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          )}
-
           <div className="lista-cuentas">
             {cuentas.map((cuenta, index) => (
               <div key={index} className="cuenta-item">
@@ -207,6 +172,39 @@ const CrearCliente = () => {
           Guardar Cliente
         </button>
       </form>
+
+      <Modal isOpen={mostrandoFormularioCuenta} onClose={() => setMostrandoFormularioCuenta(false)}>
+        <div className="modal-form">
+          <h3>Nueva Cuenta</h3>
+          <div className="form-grid">
+            <input
+              name="email"
+              value={nuevaCuenta.email}
+              onChange={handleCuentaChange}
+              placeholder="Email de la cuenta"
+              required
+            />
+            <input name="zipCode" value={nuevaCuenta.zipCode} onChange={handleCuentaChange} placeholder="Zip Code" />
+            <input name="ciudad" value={nuevaCuenta.ciudad} onChange={handleCuentaChange} placeholder="Ciudad" />
+            <input name="asesor" value={nuevaCuenta.asesor} onChange={handleCuentaChange} placeholder="Asesor" />
+            <input
+              type="number"
+              name="vendido"
+              value={nuevaCuenta.vendido}
+              onChange={handleCuentaChange}
+              placeholder="Vendido ($)"
+            />
+          </div>
+          <div className="modal-form-actions">
+            <button type="button" onClick={agregarCuenta} className="button-primary">
+              Confirmar y Agregar
+            </button>
+            <button type="button" onClick={() => setMostrandoFormularioCuenta(false)} className="button-secondary">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
