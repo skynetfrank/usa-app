@@ -68,5 +68,4 @@ export const {
   useLazyGetClienteQuery,
   useDeleteClienteMutation,
   useUpdateClienteMutation,
-
 } = clientesApi;
