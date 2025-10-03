@@ -6,7 +6,17 @@ const clienteSchema = new mongoose.Schema(
     direccion: { type: String, required: true },
     telefono: { type: String },
     email: { type: String },
-    cuentas: []
+    cuentas: [
+      {
+        email: { type: String },
+        creado: { type: Date },
+        aprobado: { type: Date },
+        zipCode: { type: String },
+        ciudad: { type: String },
+        asesor: { type: String },
+        vendido: { type: Number },
+      },
+    ],
   },
   {
     timestamps: true,

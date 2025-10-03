@@ -11,6 +11,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import UnderConstruction from "./components/UnderConstruction.jsx";
+import CreateClienteScreen from "./screens/CreateClienteScreen.jsx";
 
 
 const router = createBrowserRouter(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />}></Route>
       </Route>
       <Route path="/enconstruccion" element={<UnderConstruction />}></Route>
+      <Route path="/nuevocliente" element={<CreateClienteScreen />}></Route>
     </Route>
   )
 );

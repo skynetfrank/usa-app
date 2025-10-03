@@ -44,10 +44,6 @@ const store = configureStore({
     userUpdateProfile: userUpdateProfileReducer,
     userUpdate: userUpdateReducer,
     userList: userListReducer,
-    clienteDetails: clienteDetailsReducer,
-    clienteUpdateProfile: clienteUpdateProfileReducer,
-    clienteList: clienteListReducer,
-    clienteRegister: clienteRegisterReducer,
     [clientesApi.reducerPath]: clientesApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
 

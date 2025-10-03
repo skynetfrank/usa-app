@@ -29,11 +29,11 @@ export const clientesApi = createApi({
       query: (id) => `/clientes/${id}`,
       providesTags: (result, error, id) => [{ type: "Cliente", id }],
     }),
-    registerCliente: build.mutation({
-      query: (newClient) => ({
+    newCliente: build.mutation({
+      query: (cliente) => ({
         url: "/clientes/register",
         method: "POST",
-        body: newClient,
+        body: cliente,
       }),
       invalidatesTags: [{ type: "Cliente", id: "LIST" }],
     }),
@@ -48,10 +48,7 @@ export const clientesApi = createApi({
         { type: "Cliente", id: "LIST" },
       ],
     }),
-    getClienteByRif: build.query({
-      // Asumo que la ruta en el backend será /api/clientes/rif/:rif
-      query: (rif) => `/clientes/rif/${rif}`,
-    }),
+
     deleteCliente: build.mutation({
       query: (id) => ({
         url: `/clientes/${id}`,
@@ -67,9 +64,9 @@ export const clientesApi = createApi({
 export const {
   useGetClientesQuery,
   useGetClienteQuery,
-  useRegisterClienteMutation,
+  useNewClienteMutation,
   useLazyGetClienteQuery,
   useDeleteClienteMutation,
   useUpdateClienteMutation,
-  useLazyGetClienteByRifQuery,
+
 } = clientesApi;

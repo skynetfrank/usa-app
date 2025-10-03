@@ -2,7 +2,7 @@ import { Link, Outlet } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "./actions/userActions";
 import { useState } from "react";
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User, UserPlus } from "lucide-react";
 
 function App() {
   const userSignin = useSelector((state) => state.userSignin);
@@ -63,24 +63,30 @@ function App() {
               </button>
 
               {userInfo ? (
-                <div className="user-menu-container">
-                  <button onClick={() => setMenuOpen(!isMenuOpen)} className="user-menu-button">
-                    <span>{userInfo.name}</span>
-                    <div className="avatar">{userInfo.nombre.charAt(0)}</div>
-                  </button>
-                  {isMenuOpen && (
-                    <div className="dropdown-menu">
-                      <Link to="/profile" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                        <User size={18} />
-                        <span>Ver Perfil</span>
-                      </Link>
-                      <button onClick={signoutHandler} className="dropdown-item">
-                        <LogOut size={18} />
-                        <span>Cerrar Sesión</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
+                <>
+                  <Link to="/nuevocliente" className="button-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <UserPlus size={18} />
+                    <span>Nuevo Cliente</span>
+                  </Link>
+                  <div className="user-menu-container">
+                    <button onClick={() => setMenuOpen(!isMenuOpen)} className="user-menu-button">
+                      <span>{userInfo.name}</span>
+                      <div className="avatar">{userInfo.nombre.charAt(0)}</div>
+                    </button>
+                    {isMenuOpen && (
+                      <div className="dropdown-menu">
+                        <Link to="/profile" className="dropdown-item" onClick={() => setMenuOpen(false)}>
+                          <User size={18} />
+                          <span>Ver Perfil</span>
+                        </Link>
+                        <button onClick={signoutHandler} className="dropdown-item">
+                          <LogOut size={18} />
+                          <span>Cerrar Sesión</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               ) : (
                 <Link to="/signin" className="theme-button icon-button" aria-label="Iniciar Sesión">
                   <LogIn size={22} />
