@@ -57,7 +57,7 @@ body {
   display: grid;
   /* Mobile-first: Una sola columna por defecto */
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 5rem 1fr 2rem;
   /* Header y Footer auto, Main ocupa el resto */
   grid-template-areas:
     "header"
