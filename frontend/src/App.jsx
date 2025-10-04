@@ -47,11 +47,19 @@ function App() {
       <div className="display-grid">
         <div className="header">
           <div className="header-container">
-            <h1 className="header-title">
-              <Link to="/" className="header-title-link">
-                USA App
-              </Link>
-            </h1>
+            <div className="header-left">
+              {userInfo && (
+                <button className="hamburger-menu" onClick={() => setMobileMenuOpen(true)} aria-label="Abrir menú">
+                  <Menu size={28} />
+                </button>
+              )}
+              <h1 className="header-title">
+                <Link to="/" className="header-title-link">
+                  USA App
+                </Link>
+              </h1>
+            </div>
+
             <div className="header-right-actions">
               <button onClick={toggleTheme} className="theme-button icon-button" aria-label="Cambiar tema">
                 {theme === "light" ? (
@@ -138,12 +146,6 @@ function App() {
                   </Link>
                 )}
               </div>
-
-              {userInfo && (
-                <button className="hamburger-menu" onClick={() => setMobileMenuOpen(true)} aria-label="Abrir menú">
-                  <Menu size={28} />
-                </button>
-              )}
             </div>
           </div>
         </div>

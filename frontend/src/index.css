@@ -176,6 +176,12 @@ body {
   color: inherit;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .header-right-actions {
   display: flex;
   align-items: center;
@@ -292,7 +298,7 @@ body {
   transition: opacity var(--transition-speed) ease;
 }
 
-.button-primary.circle{
+.button-primary.circle {
   padding: 0;
 }
 
@@ -325,7 +331,7 @@ body {
   flex-direction: column;
   padding: 1.5rem;
   box-sizing: border-box;
-  animation: slideInFromRight 0.3s ease-out;
+  animation: slideInFromLeft 0.3s ease-out;
 }
 
 .mobile-nav-header {
@@ -377,9 +383,9 @@ body {
   background-color: var(--background-color);
 }
 
-@keyframes slideInFromRight {
+@keyframes slideInFromLeft {
   from {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
 
   to {
@@ -797,7 +803,7 @@ body {
 
 .lista-clientes-container h1 {
   margin: 0;
-  color: var(--text-color); 
+  color: var(--text-color);
 }
 
 
@@ -1062,13 +1068,16 @@ body {
   padding: 5px 0;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Posiciona el tooltip encima del elemento */
+  bottom: 125%;
+  /* Posiciona el tooltip encima del elemento */
   left: 50%;
-  margin-left: -70px; /* Usa la mitad del width para centrar */
+  margin-left: -70px;
+  /* Usa la mitad del width para centrar */
   opacity: 0;
   transition: opacity 0.3s;
   font-size: 0.85rem;
-  pointer-events: none; /* Evita que el tooltip interfiera con el mouse */
+  pointer-events: none;
+  /* Evita que el tooltip interfiera con el mouse */
 }
 
 .tooltip-container:hover .tooltip-text {
