@@ -146,7 +146,7 @@ function App() {
               {!userInfo && (
                 <Link to="/signin" className="button-primary login-action" aria-label="Iniciar Sesión">
                   <LogIn size={18} />
-                  <span className="login-action-text">Iniciar Sesión</span>
+                
                 </Link>
               )}
             </div>

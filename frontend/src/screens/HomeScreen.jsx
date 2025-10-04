@@ -1,9 +1,12 @@
+import { Wrench } from "lucide-react";
 
 function HomeScreen() {
-
   return (
     <div>
-      <h1>HOME SECTION</h1>
+      <div className="home-background"></div>
+      <div className="home-content">
+        <Wrench className="home-watermark-icon" />
+      </div>
     </div>
   );
 }
