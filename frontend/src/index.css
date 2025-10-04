@@ -292,6 +292,10 @@ body {
   transition: opacity var(--transition-speed) ease;
 }
 
+.button-primary.circle{
+  padding: 0;
+}
+
 .button-primary:hover {
   opacity: 0.85;
 }
@@ -786,9 +790,17 @@ body {
 
 .lista-clientes-container {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 0 auto;
   padding: 0 2rem;
+  text-align: center;
 }
+
+.lista-clientes-container h1 {
+  margin: 0;
+  color: var(--text-color); 
+}
+
+
 
 .lista-header {
   display: flex;

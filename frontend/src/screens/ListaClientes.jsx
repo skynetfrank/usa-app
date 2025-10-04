@@ -84,8 +84,9 @@ const ListaClientes = () => {
 
   return (
     <div className="lista-clientes-container">
+      <h1>Lista de Clientes</h1>
       <div className="lista-header">
-        <h1>Lista de Clientes</h1>
+
         <div className="search-container">
           <input
             type="text"
@@ -96,7 +97,7 @@ const ListaClientes = () => {
           />
         </div>
         <div className="tooltip-container">
-          <Link to="/nuevocliente" className="button-primary icon-button">
+          <Link to="/nuevocliente" className="button-primary icon-button circle">
             <Plus />
           </Link>
           <span className="tooltip-text">Crear nuevo cliente</span>
