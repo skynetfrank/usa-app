@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../components/Modal"; // Importamos el nuevo componente Modal
+import Swal from "sweetalert2";
+import { useNewClienteMutation } from "../api/clientesApi";
 
 // Iconos (ejemplo usando SVG como componentes de React)
 const AddIcon = () => (
@@ -79,6 +81,9 @@ const CrearCliente = () => {
   const [errors, setErrors] = useState({});
   const [mostrandoFormularioCuenta, setMostrandoFormularioCuenta] = useState(false);
 
+  // Hook de la mutación de RTK Query
+  const [newCliente, { isLoading, isSuccess, isError, error }] = useNewClienteMutation();
+
   const handleClienteChange = (e) => {
     const { name, value } = e.target;
     setClienteData((prev) => ({ ...prev, [name]: value }));
@@ -120,7 +125,12 @@ const CrearCliente = () => {
   const agregarCuenta = () => {
     // Simple validación para no agregar cuentas vacías
     if (!nuevaCuenta.email) {
-      alert("El email de la cuenta es obligatorio.");
+      Swal.fire({
+        icon: "error",
+        title: "Campo Obligatorio",
+        text: "El email de la cuenta es obligatorio.",
+        confirmButtonColor: "var(--primary-color)",
+      });
       return;
     }
     // Si estamos editando, llamamos a actualizar, si no, a agregar.
@@ -138,9 +148,25 @@ const CrearCliente = () => {
   };
 
   const eliminarCuenta = (index) => {
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    if (!confirm("¿Estás seguro de que quieres eliminar esta cuenta?")) return;
-    setCuentas((prev) => prev.filter((_, i) => i !== index));
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esta acción.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, ¡eliminar!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setCuentas((prev) => prev.filter((_, i) => i !== index));
+        Swal.fire({
+          title: "¡Eliminada!",
+          text: "La cuenta ha sido eliminada.",
+          icon: "success",
+        });
+      }
+    });
   };
 
   const validateForm = () => {
@@ -160,38 +186,40 @@ const CrearCliente = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const clienteCompleto = { ...clienteData, cuentas };
+    newCliente(clienteCompleto);
+  };
 
-    try {
-      const response = await fetch("/api/clientes/newcliente", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(clienteCompleto),
+  // Efecto para manejar el resultado de la mutación
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire({
+        icon: "success",
+        title: "¡Cliente Creado!",
+        text: "El nuevo cliente ha sido guardado exitosamente.",
+        timer: 2000,
+        showConfirmButton: false,
       });
-
-      if (!response.ok) {
-        throw new Error("Error al crear el cliente");
-      }
-
-      const resultado = await response.json();
-      console.log("Cliente creado:", resultado);
-      alert("¡Cliente creado con éxito!");
-      // Resetear el formulario por completo
       setClienteData(estadoInicialCliente);
       setCuentas([]);
       setErrors({});
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Error en la petición:", error);
-      alert(`Error: ${error.message}`);
     }
-  };
+
+    if (isError) {
+      const errorMessage = error?.data?.message || "Ocurrió un error desconocido";
+      Swal.fire({
+        icon: "error",
+        title: "Error al crear el cliente",
+        text: errorMessage,
+        confirmButtonColor: "var(--primary-color)",
+      });
+      console.error("Error en la mutación:", error);
+    }
+  }, [isSuccess, isError, error]); // Las dependencias están correctas
 
   return (
     <div className="crear-cliente-container">
@@ -288,8 +316,8 @@ const CrearCliente = () => {
           </div>
         </section>
 
-        <button type="submit" className="submit-btn">
-          Guardar Cliente
+        <button type="submit" className="submit-btn" disabled={isLoading}>
+          {isLoading ? "Guardando..." : "Guardar Cliente"}
         </button>
       </form>
 

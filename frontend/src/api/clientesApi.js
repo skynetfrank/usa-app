@@ -6,7 +6,9 @@ export const clientesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api",
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().userSignin.userInfo.token;
+      // Safely access the token using optional chaining (?.)
+      // This prevents an error if userInfo is null (e.g., when the user is not logged in)
+      const token = getState().userSignin?.userInfo?.token;
 
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
@@ -31,7 +33,7 @@ export const clientesApi = createApi({
     }),
     newCliente: build.mutation({
       query: (cliente) => ({
-        url: "/clientes/register",
+        url: "/clientes/newcliente",
         method: "POST",
         body: cliente,
       }),

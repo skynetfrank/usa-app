@@ -41,28 +41,21 @@ clienteRouter.get(
 );
 
 clienteRouter.post(
-  "/register",
+  "/newcliente",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const empleado = new Cliente({
       nombre: req.body.nombre,
-      rif: req.body.rif,
       email: req.body.email,
-      celular: req.body.celular,
+      telefono: req.body.telefono,
       direccion: req.body.direccion,
-      canal: req.body.canal,
-      timestamp: req.body.timestamp,
+      cuentas: req.body.cuentas,
     });
     const createdcliente = await empleado.save();
     res.send({
       _id: createdcliente._id,
       nombre: createdcliente.nombre,
-      rif: createdcliente.rif,
       email: createdcliente.email,
-      celular: createdcliente.celular,
-      direccion: createdcliente.direccion,
-      canal: createdcliente.canal,
-      timestamp: createdcliente.timestamp,
     });
   })
 );
