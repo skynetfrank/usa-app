@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { useGetClientesQuery, useDeleteClienteMutation } from "../api/clientesApi";
@@ -38,6 +38,7 @@ const DeleteIcon = () => (
 const ListaClientes = () => {
   const { data: clientes, error, isLoading, isFetching } = useGetClientesQuery();
   const [deleteCliente] = useDeleteClienteMutation();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleDelete = (id, nombre) => {
     Swal.fire({
@@ -73,11 +74,27 @@ const ListaClientes = () => {
     return <div className="error-container">Error al cargar los clientes. Por favor, intente de nuevo.</div>;
   }
 
+  const filteredClientes =
+    clientes?.filter(
+      (cliente) =>
+        cliente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (cliente.email && cliente.email.toLowerCase().includes(searchTerm.toLowerCase()))
+    ) || [];
+
   return (
     <div className="lista-clientes-container">
       <div className="lista-header">
         <h1>Lista de Clientes</h1>
-        <Link to="/crear-cliente" className="button-primary">
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Buscar por nombre o email..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <Link to="/nuevocliente" className="button-primary">
           Crear Nuevo Cliente
         </Link>
       </div>
@@ -94,8 +111,8 @@ const ListaClientes = () => {
             </tr>
           </thead>
           <tbody>
-            {clientes && clientes.length > 0 ? (
-              clientes.map((cliente) => (
+            {filteredClientes.length > 0 ? (
+              filteredClientes.map((cliente) => (
                 <tr key={cliente._id}>
                   <td data-label="Nombre">{cliente.nombre}</td>
                   <td data-label="Email">{cliente.email || "-"}</td>
@@ -121,7 +138,7 @@ const ListaClientes = () => {
             ) : (
               <tr>
                 <td colSpan="5" className="no-data-cell">
-                  No hay clientes registrados.
+                  {searchTerm ? "No se encontraron clientes." : "No hay clientes registrados."}
                 </td>
               </tr>
             )}
