@@ -192,10 +192,12 @@ body {
 }
 
 .header-actions {
-  display: none; /* Oculto por defecto, se mostrará en desktop */
+  display: none;
+  /* Oculto por defecto, se mostrará en desktop */
   align-items: center;
   gap: 1rem;
 }
+
 /* Estilos para botones que solo contienen un icono */
 .icon-button {
   display: inline-flex;
@@ -296,7 +298,8 @@ body {
 
 /* --- Estilos para el menú de hamburguesa y navegación móvil --- */
 .hamburger-menu {
-  display: flex; /* Se muestra en móvil */
+  display: flex;
+  /* Se muestra en móvil */
   align-items: center;
   justify-content: center;
   background: none;
@@ -374,6 +377,7 @@ body {
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -651,6 +655,7 @@ body {
   margin-top: 1rem;
   transition: opacity 0.2s;
 }
+
 .submit-btn:hover:not(:disabled) {
   opacity: 0.85;
 }
@@ -702,15 +707,18 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 @keyframes slideIn {
   from {
     transform: translateY(-30px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -915,6 +923,7 @@ body {
 .cuenta-pill-container:hover .cuenta-tooltip {
   visibility: visible;
   opacity: 1;
+
 }
 
 .cuenta-tooltip p {
@@ -986,6 +995,7 @@ body {
   .clientes-table thead {
     display: none;
   }
+
   .clientes-table,
   .clientes-table tbody,
   .clientes-table tr,
@@ -993,14 +1003,17 @@ body {
     display: block;
     width: 100%;
   }
+
   .clientes-table tr {
     margin-bottom: 1rem;
   }
+
   .clientes-table td {
     text-align: right;
     padding-left: 50%;
     position: relative;
   }
+
   .clientes-table td::before {
     content: attr(data-label);
     position: absolute;
@@ -1011,20 +1024,56 @@ body {
     font-weight: bold;
     color: var(--text-color);
   }
+
   .action-buttons {
     justify-content: flex-end;
   }
+
   .cuentas-cell {
     justify-content: flex-end;
   }
 }
 
+/* --- Estilos para Tooltip genérico --- */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Posiciona el tooltip encima del elemento */
+  left: 50%;
+  margin-left: -70px; /* Usa la mitad del width para centrar */
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.85rem;
+  pointer-events: none; /* Evita que el tooltip interfiera con el mouse */
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
 /* Media Query para mostrar/ocultar elementos del header */
-@media (min-width: 992px) {
+@media (min-width: 575px) {
   .header-actions {
-    display: flex; /* Muestra acciones en escritorio */
+    display: flex;
+    /* Muestra acciones en escritorio */
   }
+
   .hamburger-menu {
-    display: none; /* Oculta hamburguesa en escritorio */
+    display: none;
+    /* Oculta hamburguesa en escritorio */
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { useGetClientesQuery, useDeleteClienteMutation } from "../api/clientesApi";
+import { Plus } from "lucide-react";
 
 // Iconos para los botones de acción
 const EditIcon = () => (
@@ -94,9 +95,12 @@ const ListaClientes = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Link to="/nuevocliente" className="button-primary">
-          Crear Nuevo Cliente
-        </Link>
+        <div className="tooltip-container">
+          <Link to="/nuevocliente" className="button-primary icon-button">
+            <Plus />
+          </Link>
+          <span className="tooltip-text">Crear nuevo cliente</span>
+        </div>
       </div>
 
       <div className="table-responsive">

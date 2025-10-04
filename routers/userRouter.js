@@ -78,8 +78,6 @@ userRouter.put(
     const user = await User.findById(req.user._id);
     if (user) {
       user.nombre = req.body.nombre || user.nombre;
-      user.apellido = req.body.apellido || user.apellido;
-      user.cedula = req.body.cedula || user.cedula;
       user.email = req.body.email || user.email;
       user.telefono = req.body.telefono || user.telefono;
 
@@ -90,12 +88,9 @@ userRouter.put(
       res.send({
         _id: updatedUser._id,
         nombre: updatedUser.nombre,
-        apellido: updatedUser.apellido,
-        cedula: updatedUser.cedula,
         email: updatedUser.email,
         telefono: updatedUser.telefono,
         isAdmin: updatedUser.isAdmin,
-        isVendedor: updatedUser.isVendedor,
         token: generateToken(updatedUser),
       });
     }

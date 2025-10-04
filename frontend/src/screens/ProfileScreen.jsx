@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { detailsUser, updateUserProfile } from "../actions/userActions";
+import { detailsUser as updateUser, updateUserProfile } from "../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 import Swal from "sweetalert2";
-import logo from "../assets/logo.png";
-import { User, Mail, Lock, Eye, EyeOff, Fingerprint, Phone, Save } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff, Fingerprint, Phone } from "lucide-react";
 
 export default function ProfileScreen() {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [cedula, setCedula] = useState("");
-  const [telefono, setTelefono] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState(null);
@@ -29,15 +25,13 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (!user) {
       dispatch({ type: USER_UPDATE_PROFILE_RESET });
-      dispatch(detailsUser(userInfo._id));
+      dispatch(updateUser(userInfo._id));
     } else {
       setNombre(user.nombre || " ");
       setEmail(user.email || " ");
-      setApellido(user.apellido || " ");
-      setCedula(user.cedula || " ");
-      setTelefono(user.telefono || " ");
+
     }
-  }, [dispatch, userInfo._id, user, successUpdate]);
+  }, [dispatch, userInfo._id, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -52,9 +46,6 @@ export default function ProfileScreen() {
           nombre,
           email,
           password,
-          apellido,
-          cedula,
-          telefono,
         })
       );
     }
@@ -64,8 +55,8 @@ export default function ProfileScreen() {
     if (successUpdate) {
       Swal.fire({
         title: "Datos Actualizado con Exito!",
-        text: "Editar Perfil",
-        imageUrl: logo,
+        text: "Tu perfil ha sido actualizado.",
+        icon: "success",
         imageWidth: 70,
         imageHeight: 70,
         imageAlt: "logo",
@@ -77,9 +68,9 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (errorUpdate) {
       Swal.fire({
-        title: "error",
-        text: "Editar Perfil",
-        imageUrl: logo,
+        title: "Error",
+        text: errorUpdate,
+        icon: "error",
         imageWidth: 70,
         imageHeight: 70,
         imageAlt: "logo",
@@ -96,15 +87,14 @@ export default function ProfileScreen() {
   }, [dispatch, error]);
 
   return (
-    <div className="signin-container">
-      <form className="signin-form" onSubmit={submitHandler} style={{ gap: "1rem" }}>
-        <img src={logo} alt="Logo" className="signin-logo" />
-        <h2>Perfil de Usuario</h2>
+    <div className="form-container">
+      <form className="form-card" onSubmit={submitHandler}>
+        <h2 className="form-title">Perfil de Usuario</h2>
 
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <>
+          <React.Fragment>
             <div className="input-group">
               <User className="input-icon" />
               <input
@@ -115,16 +105,7 @@ export default function ProfileScreen() {
                 onChange={(e) => setNombre(e.target.value)}
               />
             </div>
-            <div className="input-group">
-              <User className="input-icon" />
-              <input
-                id="apellido"
-                type="text"
-                placeholder="Apellido"
-                value={apellido}
-                onChange={(e) => setApellido(e.target.value)}
-              />
-            </div>
+          
             <div className="input-group">
               <Mail className="input-icon" />
               <input
@@ -143,7 +124,11 @@ export default function ProfileScreen() {
                 placeholder="Nueva clave (opcional)"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+              <button
+                type="button"
+                className="password-toggle-button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
                 {showPassword ? <EyeOff /> : <Eye />}
               </button>
             </div>
@@ -157,42 +142,21 @@ export default function ProfileScreen() {
               />
               <button
                 type="button"
-                className="password-toggle"
+                className="password-toggle-button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? <EyeOff /> : <Eye />}
               </button>
             </div>
-            <div className="input-group">
-              <Fingerprint className="input-icon" />
-              <input
-                id="cedula"
-                type="text"
-                placeholder="Cédula"
-                value={cedula}
-                onChange={(e) => setCedula(e.target.value)}
-              />
-            </div>
-            <div className="input-group">
-              <Phone className="input-icon" />
-              <input
-                id="telefono"
-                type="text"
-                placeholder="Teléfono"
-                value={telefono}
-                onChange={(e) => setTelefono(e.target.value)}
-              />
-            </div>
+           
+           
 
-            {(errorUpdate || message) && <p className="signin-error">{errorUpdate || message}</p>}
+            {(errorUpdate || message) && <div className="form-error">{errorUpdate || message}</div>}
 
-            <div className="form-actions">
-              <button type="submit" className="signin-button" disabled={loadingUpdate}>
-                {loadingUpdate ? <div className="spinner"></div> : <Save />}
-                <span>{loadingUpdate ? "Actualizando..." : "Actualizar Perfil"}</span>
-              </button>
-            </div>
-          </>
+            <button type="submit" className="button-primary form-submit-button" disabled={loadingUpdate}>
+              {loadingUpdate ? "Actualizando..." : "Actualizar Perfil"}
+            </button>
+          </React.Fragment>
         )}
       </form>
     </div>
