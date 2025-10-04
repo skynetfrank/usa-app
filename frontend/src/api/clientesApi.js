@@ -56,7 +56,10 @@ export const clientesApi = createApi({
         url: `/clientes/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Cliente", id }],
+      invalidatesTags: (result, error, id) => [
+        { type: "Cliente", id },
+        { type: "Cliente", id: "LIST" }, // Invalida la lista para que se vuelva a cargar
+      ],
     }),
   }),
 });

@@ -12,6 +12,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import UnderConstruction from "./components/UnderConstruction.jsx";
 import CrearCliente from "./screens/CrearCliente.jsx";
+import ListaClientes from "./screens/ListaClientes.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/enconstruccion" element={<UnderConstruction />}></Route>
       <Route path="/nuevocliente" element={<CrearCliente />}></Route>
+         <Route path="/listaclientes" element={<ListaClientes />}></Route>
     </Route>
   )
 );

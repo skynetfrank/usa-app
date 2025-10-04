@@ -2,7 +2,7 @@ import { Link, Outlet } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "./actions/userActions";
 import { useState } from "react";
-import { LogIn, LogOut, User, UserPlus } from "lucide-react";
+import { LogIn, LogOut, User, UserPlus, List } from "lucide-react";
 
 function App() {
   const userSignin = useSelector((state) => state.userSignin);
@@ -11,9 +11,7 @@ function App() {
 
   const [isMenuOpen, setMenuOpen] = useState(false);
   // Estado para gestionar el tema actual y renderizar el icono correcto
-  const [theme, setTheme] = useState(
-    () => document.body.getAttribute('data-theme') || 'light'
-  );
+  const [theme, setTheme] = useState(() => document.body.getAttribute("data-theme") || "light");
 
   const signoutHandler = () => {
     setMenuOpen(false); // Cierra el menú al salir
@@ -22,12 +20,12 @@ function App() {
 
   // Sincroniza el atributo del body con el estado del tema
   const toggleTheme = () => {
-    setTheme(prevTheme => {
-      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
-      if (newTheme === 'dark') {
-        document.body.setAttribute('data-theme', 'dark');
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === "light" ? "dark" : "light";
+      if (newTheme === "dark") {
+        document.body.setAttribute("data-theme", "dark");
       } else {
-        document.body.removeAttribute('data-theme');
+        document.body.removeAttribute("data-theme");
       }
       return newTheme;
     });
@@ -39,12 +37,24 @@ function App() {
         <div className="header">
           <div className="header-container">
             <h1 className="header-title">
-              <Link to="/" className="header-title-link">USA App</Link>
+              <Link to="/" className="header-title-link">
+                USA App
+              </Link>
             </h1>
             <div className="header-actions">
               <button onClick={toggleTheme} className="theme-button icon-button" aria-label="Cambiar tema">
-                {theme === 'light' ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {theme === "light" ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -56,7 +66,17 @@ function App() {
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                   </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                   </svg>
                 )}
@@ -64,7 +84,19 @@ function App() {
 
               {userInfo ? (
                 <>
-                  <Link to="/nuevocliente" className="button-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Link
+                    to="/listaclientes"
+                    className="button-primary"
+                    style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                  >
+                    <List size={18} />
+                    <span>Clientes</span>
+                  </Link>
+                  <Link
+                    to="/nuevocliente"
+                    className="button-primary"
+                    style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                  >
                     <UserPlus size={18} />
                     <span>Nuevo Cliente</span>
                   </Link>

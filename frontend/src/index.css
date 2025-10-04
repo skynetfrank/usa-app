@@ -684,3 +684,158 @@ body {
 .button-secondary:hover {
   opacity: 0.85;
 }
+
+
+/* LISTA CLIENTES */
+
+.lista-clientes-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.lista-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lista-header h1 {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.table-responsive {
+  overflow-x: auto;
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.clientes-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.clientes-table th,
+.clientes-table td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.clientes-table thead {
+  background-color: var(--background-color);
+}
+
+.clientes-table th {
+  font-weight: 600;
+  color: var(--text-muted-color);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.clientes-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s;
+}
+
+.clientes-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.clientes-table tbody tr:hover {
+  background-color: var(--background-color);
+}
+
+.count-cell {
+  text-align: center;
+  font-weight: bold;
+}
+
+.no-data-cell {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted-color);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn.edit-btn {
+  color: var(--primary-color);
+}
+
+.action-btn.edit-btn:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.action-btn.delete-btn {
+  color: #dc3545;
+}
+
+.action-btn.delete-btn:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Estilos para contenedores de carga y error */
+.loading-container, .error-container {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
+  color: var(--text-muted-color);
+}
+
+/* Media query para responsividad en tablas */
+@media (max-width: 768px) {
+  .clientes-table thead {
+    display: none;
+  }
+  .clientes-table, .clientes-table tbody, .clientes-table tr, .clientes-table td {
+    display: block;
+    width: 100%;
+  }
+  .clientes-table tr {
+    margin-bottom: 1rem;
+  }
+  .clientes-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+  .clientes-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    width: 45%;
+    padding-right: 1rem;
+    text-align: left;
+    font-weight: bold;
+    color: var(--text-color);
+  }
+  .action-buttons {
+    justify-content: flex-end;
+  }
+}
