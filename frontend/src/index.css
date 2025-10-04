@@ -424,6 +424,26 @@ body {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
+/* Estilos para validación de formularios */
+.form-field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field-error {
+  color: #dc3545; /* Color de peligro */
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.input-error {
+  border-color: #dc3545 !important; /* Sobrescribe el color del borde */
+}
+
+.input-error:focus {
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important; /* Sombra de foco en rojo */
+}
+
 .cuentas-header {
   display: flex;
   justify-content: space-between;
@@ -491,15 +511,34 @@ body {
   color: var(--text-color);
 }
 
-.delete-btn-card {
+.cuenta-card-actions {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.icon-btn-card {
   background: none;
   border: none;
   color: var(--secondary-color);
   cursor: pointer;
   padding: 0.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.icon-btn-card:hover {
+  background-color: #e9ecef;
+}
+
+.icon-btn-card.delete:hover {
+  color: var(--danger-color);
+  background-color: #f8d7da;
 }
 
 .delete-btn {

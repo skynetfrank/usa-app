@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Modal from "../components/Modal"; // Importamos el nuevo componente Modal
-import "../components/Modal.css"; // Importamos los estilos del Modal
 
 // Iconos (ejemplo usando SVG como componentes de React)
 const AddIcon = () => (
@@ -40,23 +39,44 @@ const TrashIcon = () => (
   </svg>
 );
 
+const PencilIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+    <path d="m15 5 4 4"></path>
+  </svg>
+);
+
+const estadoInicialCliente = {
+  nombre: "",
+  direccion: "",
+  telefono: "",
+  email: "",
+};
+
+const estadoInicialNuevaCuenta = {
+  email: "",
+  zipCode: "",
+  ciudad: "",
+  asesor: "",
+  vendido: 0,
+};
+
 const CrearCliente = () => {
-  const [clienteData, setClienteData] = useState({
-    nombre: "",
-    direccion: "",
-    telefono: "",
-    email: "",
-  });
-
+  const [clienteData, setClienteData] = useState(estadoInicialCliente);
   const [cuentas, setCuentas] = useState([]);
-  const [nuevaCuenta, setNuevaCuenta] = useState({
-    email: "",
-    zipCode: "",
-    ciudad: "",
-    asesor: "",
-    vendido: 0,
-  });
-
+  const [nuevaCuenta, setNuevaCuenta] = useState(estadoInicialNuevaCuenta);
+  const [cuentaEnEdicion, setCuentaEnEdicion] = useState(null); // null para crear, index para editar
+  const [errors, setErrors] = useState({});
   const [mostrandoFormularioCuenta, setMostrandoFormularioCuenta] = useState(false);
 
   const handleClienteChange = (e) => {
@@ -66,7 +86,35 @@ const CrearCliente = () => {
 
   const handleCuentaChange = (e) => {
     const { name, value } = e.target;
-    setNuevaCuenta((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "vendido") {
+      // 1. Limpiar el valor de entrada para obtener solo los dígitos.
+      const soloNumeros = value.replace(/[^\d]/g, "");
+      // 2. Convertir a número. Si está vacío, es 0.
+      const valorNumerico = soloNumeros ? parseInt(soloNumeros, 10) : 0;
+      // 3. Actualizar el estado con el valor numérico.
+      setNuevaCuenta((prev) => ({ ...prev, [name]: valorNumerico }));
+    } else {
+      setNuevaCuenta((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const abrirModalCreacion = () => {
+    setCuentaEnEdicion(null);
+    setNuevaCuenta(estadoInicialNuevaCuenta);
+    setMostrandoFormularioCuenta(true);
+  };
+
+  const abrirModalEdicion = (index) => {
+    setCuentaEnEdicion(index);
+    setNuevaCuenta(cuentas[index]);
+    setMostrandoFormularioCuenta(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrandoFormularioCuenta(false);
+    setCuentaEnEdicion(null);
+    setNuevaCuenta(estadoInicialNuevaCuenta);
   };
 
   const agregarCuenta = () => {
@@ -75,17 +123,47 @@ const CrearCliente = () => {
       alert("El email de la cuenta es obligatorio.");
       return;
     }
-    setCuentas((prev) => [...prev, { ...nuevaCuenta, creado: new Date() }]);
-    setNuevaCuenta({ email: "", zipCode: "", ciudad: "", asesor: "", vendido: 0 });
-    setMostrandoFormularioCuenta(false);
+    // Si estamos editando, llamamos a actualizar, si no, a agregar.
+    if (cuentaEnEdicion !== null) {
+      actualizarCuenta();
+    } else {
+      setCuentas((prev) => [...prev, { ...nuevaCuenta, creado: new Date() }]);
+    }
+    cerrarModal();
+  };
+
+  const actualizarCuenta = () => {
+    const cuentasActualizadas = cuentas.map((cuenta, index) => (index === cuentaEnEdicion ? nuevaCuenta : cuenta));
+    setCuentas(cuentasActualizadas);
   };
 
   const eliminarCuenta = (index) => {
+    // eslint-disable-next-line no-alert, no-restricted-globals
+    if (!confirm("¿Estás seguro de que quieres eliminar esta cuenta?")) return;
     setCuentas((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!clienteData.nombre.trim()) {
+      newErrors.nombre = "El nombre completo es obligatorio.";
+    }
+    if (!clienteData.direccion.trim()) {
+      newErrors.direccion = "La dirección es obligatoria.";
+    }
+    if (clienteData.email && !/\S+@\S+\.\S+/.test(clienteData.email)) {
+      newErrors.email = "El formato del email no es válido.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     const clienteCompleto = { ...clienteData, cuentas };
 
     try {
@@ -104,7 +182,10 @@ const CrearCliente = () => {
       const resultado = await response.json();
       console.log("Cliente creado:", resultado);
       alert("¡Cliente creado con éxito!");
-      // Opcional: resetear formulario o redirigir
+      // Resetear el formulario por completo
+      setClienteData(estadoInicialCliente);
+      setCuentas([]);
+      setErrors({});
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error en la petición:", error);
@@ -120,35 +201,52 @@ const CrearCliente = () => {
         <section className="datos-principales">
           <h2>Datos Principales</h2>
           <div className="form-grid">
-            <input
-              name="nombre"
-              value={clienteData.nombre}
-              onChange={handleClienteChange}
-              placeholder="Nombre completo"
-              required
-            />
-            <input
-              name="direccion"
-              value={clienteData.direccion}
-              onChange={handleClienteChange}
-              placeholder="Dirección"
-              required
-            />
-            <input name="telefono" value={clienteData.telefono} onChange={handleClienteChange} placeholder="Teléfono" />
-            <input
-              type="email"
-              name="email"
-              value={clienteData.email}
-              onChange={handleClienteChange}
-              placeholder="Email Principal"
-            />
+            <div className="form-field-container">
+              <input
+                name="nombre"
+                value={clienteData.nombre}
+                onChange={handleClienteChange}
+                placeholder="Nombre completo"
+                className={errors.nombre ? "input-error" : ""}
+              />
+              {errors.nombre && <span className="form-field-error">{errors.nombre}</span>}
+            </div>
+            <div className="form-field-container">
+              <input
+                name="direccion"
+                value={clienteData.direccion}
+                onChange={handleClienteChange}
+                placeholder="Dirección"
+                className={errors.direccion ? "input-error" : ""}
+              />
+              {errors.direccion && <span className="form-field-error">{errors.direccion}</span>}
+            </div>
+            <div className="form-field-container">
+              <input
+                name="telefono"
+                value={clienteData.telefono}
+                onChange={handleClienteChange}
+                placeholder="Teléfono"
+              />
+            </div>
+            <div className="form-field-container">
+              <input
+                type="email"
+                name="email"
+                value={clienteData.email}
+                onChange={handleClienteChange}
+                placeholder="Email Principal"
+                className={errors.email ? "input-error" : ""}
+              />
+              {errors.email && <span className="form-field-error">{errors.email}</span>}
+            </div>
           </div>
         </section>
 
         <section className="cuentas-seccion">
           <div className="cuentas-header">
             <h2>Cuentas</h2>
-            <button type="button" className="add-btn" onClick={() => setMostrandoFormularioCuenta(true)}>
+            <button type="button" className="add-btn" onClick={abrirModalCreacion}>
               <AddIcon /> Agregar Cuenta
             </button>
           </div>
@@ -156,9 +254,14 @@ const CrearCliente = () => {
           <div className="grid-cuentas">
             {cuentas.map((cuenta, index) => (
               <div key={index} className="cuenta-card">
-                <button type="button" onClick={() => eliminarCuenta(index)} className="delete-btn-card">
-                  <TrashIcon />
-                </button>
+                <div className="cuenta-card-actions">
+                  <button type="button" onClick={() => abrirModalEdicion(index)} className="icon-btn-card">
+                    <PencilIcon />
+                  </button>
+                  <button type="button" onClick={() => eliminarCuenta(index)} className="icon-btn-card delete">
+                    <TrashIcon />
+                  </button>
+                </div>
                 <div className="cuenta-card-header">
                   <strong>{cuenta.email}</strong>
                 </div>
@@ -173,7 +276,11 @@ const CrearCliente = () => {
                     <strong>Asesor:</strong> {cuenta.asesor || "N/A"}
                   </p>
                   <p>
-                    <strong>Vendido:</strong> ${cuenta.vendido || 0}
+                    <strong>Vendido:</strong>{" "}
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(cuenta.vendido || 0)}
                   </p>
                 </div>
               </div>
@@ -186,9 +293,9 @@ const CrearCliente = () => {
         </button>
       </form>
 
-      <Modal isOpen={mostrandoFormularioCuenta} onClose={() => setMostrandoFormularioCuenta(false)}>
+      <Modal isOpen={mostrandoFormularioCuenta} onClose={cerrarModal}>
         <div className="modal-form">
-          <h3>Nueva Cuenta</h3>
+          <h3>{cuentaEnEdicion !== null ? "Editar Cuenta" : "Nueva Cuenta"}</h3>
           <div className="form-grid">
             <input
               name="email"
@@ -201,18 +308,21 @@ const CrearCliente = () => {
             <input name="ciudad" value={nuevaCuenta.ciudad} onChange={handleCuentaChange} placeholder="Ciudad" />
             <input name="asesor" value={nuevaCuenta.asesor} onChange={handleCuentaChange} placeholder="Asesor" />
             <input
-              type="number"
+              type="text" // Cambiado a 'text' para permitir el formato de moneda
               name="vendido"
-              value={nuevaCuenta.vendido}
+              value={new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(nuevaCuenta.vendido || 0)}
               onChange={handleCuentaChange}
               placeholder="Vendido ($)"
             />
           </div>
           <div className="modal-form-actions">
             <button type="button" onClick={agregarCuenta} className="button-primary">
-              Confirmar y Agregar
+              {cuentaEnEdicion !== null ? "Actualizar Cuenta" : "Confirmar y Agregar"}
             </button>
-            <button type="button" onClick={() => setMostrandoFormularioCuenta(false)} className="button-secondary">
+            <button type="button" onClick={cerrarModal} className="button-secondary">
               Cancelar
             </button>
           </div>
