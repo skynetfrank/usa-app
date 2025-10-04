@@ -153,16 +153,29 @@ const CrearCliente = () => {
             </button>
           </div>
 
-          <div className="lista-cuentas">
+          <div className="grid-cuentas">
             {cuentas.map((cuenta, index) => (
-              <div key={index} className="cuenta-item">
-                <div className="cuenta-info">
-                  <span className="cuenta-email">{cuenta.email}</span>
-                  <span className="cuenta-ciudad">{cuenta.ciudad || "Sin ciudad"}</span>
-                </div>
-                <button type="button" onClick={() => eliminarCuenta(index)} className="delete-btn">
+              <div key={index} className="cuenta-card">
+                <button type="button" onClick={() => eliminarCuenta(index)} className="delete-btn-card">
                   <TrashIcon />
                 </button>
+                <div className="cuenta-card-header">
+                  <strong>{cuenta.email}</strong>
+                </div>
+                <div className="cuenta-card-body">
+                  <p>
+                    <strong>Ciudad:</strong> {cuenta.ciudad || "N/A"}
+                  </p>
+                  <p>
+                    <strong>Zip:</strong> {cuenta.zipCode || "N/A"}
+                  </p>
+                  <p>
+                    <strong>Asesor:</strong> {cuenta.asesor || "N/A"}
+                  </p>
+                  <p>
+                    <strong>Vendido:</strong> ${cuenta.vendido || 0}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
