@@ -363,6 +363,12 @@ body {
   background-color: var(--background-color);
 }
 
+.login-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 @keyframes slideInFromLeft {
   from {
     transform: translateX(-100%);
@@ -1059,6 +1065,11 @@ Aproximación: Mobile First
     display: none;
     /* Oculta hamburguesa en escritorio */
   }
+
+  /* Muestra el texto del botón de login en pantallas grandes */
+  .login-action-text {
+    display: inline;
+  }
 }
 
 /* --- Breakpoint: md (Medium devices, 768px y superior) --- */
@@ -1110,6 +1121,11 @@ Aproximación: Mobile First
   .action-buttons,
   .cuentas-cell {
     justify-content: flex-start;
+  }
+
+  /* Oculta el texto del botón de login en pantallas pequeñas */
+  .login-action-text {
+    display: none;
   }
 }
 

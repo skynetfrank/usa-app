@@ -140,12 +140,15 @@ function App() {
                     </div>
                   </>
                 ) : (
-                  <Link to="/signin" className="button-primary" aria-label="Iniciar Sesión">
-                    <LogIn size={18} />
-                    <span>Iniciar Sesión</span>
-                  </Link>
+                  <></> // Dejado vacío, el login se maneja fuera
                 )}
               </div>
+              {!userInfo && (
+                <Link to="/signin" className="button-primary login-action" aria-label="Iniciar Sesión">
+                  <LogIn size={18} />
+                  <span className="login-action-text">Iniciar Sesión</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
