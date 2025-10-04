@@ -117,8 +117,33 @@ const ListaClientes = () => {
                   <td data-label="Nombre">{cliente.nombre}</td>
                   <td data-label="Email">{cliente.email || "-"}</td>
                   <td data-label="Teléfono">{cliente.telefono || "-"}</td>
-                  <td data-label="Cuentas" className="count-cell">
-                    {cliente.cuentas.length}
+                  <td data-label="Cuentas" className="cuentas-cell">
+                    {cliente.cuentas.length > 0 ? (
+                      cliente.cuentas.map((cuenta, index) => (
+                        <div key={index} className="cuenta-pill-container">
+                          <span className="cuenta-pill">{cuenta.email}</span>
+                          <div className="cuenta-tooltip">
+                            <p>
+                              <strong>Ciudad:</strong> {cuenta.ciudad || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Zip:</strong> {cuenta.zipCode || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Asesor:</strong> {cuenta.asesor || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Vendido:</strong>{" "}
+                              {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+                                cuenta.vendido || 0
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <span>-</span>
+                    )}
                   </td>
                   <td data-label="Acciones">
                     <div className="action-buttons">

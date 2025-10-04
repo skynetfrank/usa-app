@@ -685,7 +685,6 @@ body {
   opacity: 0.85;
 }
 
-
 /* LISTA CLIENTES */
 
 .lista-clientes-container {
@@ -776,9 +775,70 @@ body {
   background-color: var(--background-color);
 }
 
-.count-cell {
-  text-align: center;
-  font-weight: bold;
+.cuentas-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.cuenta-pill {
+  background-color: color-mix(in srgb, var(--primary-color) 85%, #000);
+  color: #fff;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+[data-theme="dark"] .cuenta-pill {
+  background-color: color-mix(in srgb, var(--primary-color) 60%, #000);
+}
+
+.cuenta-pill-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cuenta-tooltip {
+  visibility: hidden;
+  width: 220px;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  text-align: left;
+  border-radius: 8px;
+  padding: 0.75rem;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -110px;
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  white-space: normal;
+}
+
+.cuenta-pill-container:hover .cuenta-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.cuenta-tooltip p {
+  margin: 0.3rem 0;
+  line-height: 1.4;
+}
+
+.cuenta-tooltip p:first-child {
+  margin-top: 0;
+}
+
+.cuenta-tooltip p:last-child {
+  margin-bottom: 0;
 }
 
 .no-data-cell {
@@ -824,7 +884,8 @@ body {
 }
 
 /* Estilos para contenedores de carga y error */
-.loading-container, .error-container {
+.loading-container,
+.error-container {
   text-align: center;
   padding: 4rem;
   font-size: 1.2rem;
@@ -836,7 +897,10 @@ body {
   .clientes-table thead {
     display: none;
   }
-  .clientes-table, .clientes-table tbody, .clientes-table tr, .clientes-table td {
+  .clientes-table,
+  .clientes-table tbody,
+  .clientes-table tr,
+  .clientes-table td {
     display: block;
     width: 100%;
   }
@@ -859,6 +923,9 @@ body {
     color: var(--text-color);
   }
   .action-buttons {
+    justify-content: flex-end;
+  }
+  .cuentas-cell {
     justify-content: flex-end;
   }
 }
