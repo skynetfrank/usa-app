@@ -13,6 +13,7 @@ import HomeScreen from "./screens/HomeScreen";
 import UnderConstruction from "./components/UnderConstruction.jsx";
 import CrearCliente from "./screens/CrearCliente.jsx";
 import ListaClientes from "./screens/ListaClientes.jsx";
+import EditarCliente from "./screens/EditarCliente.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +26,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/enconstruccion" element={<UnderConstruction />}></Route>
       <Route path="/nuevocliente" element={<CrearCliente />}></Route>
-         <Route path="/listaclientes" element={<ListaClientes />}></Route>
+      <Route path="/listaclientes" element={<ListaClientes />}></Route>
+      <Route path="/clientes/editar/:id" element={<EditarCliente />}></Route>
     </Route>
   )
 );
