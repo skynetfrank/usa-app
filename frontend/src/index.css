@@ -132,26 +132,6 @@ body {
   color: var(--text-muted-color);
 }
 
-/* Media Query para pantallas grandes (Desktop) */
-@media (min-width: 992px) {
-  .display-grid {
-    /* Layout de 3 columnas: sidebar + contenido principal */
-    grid-template-columns: 20px 1fr;
-    /* Ancho fijo para sidebar, resto para main */
-    grid-template-areas:
-      "header  header"
-      "sidebar main"
-      "footer  footer";
-  }
-
-  .sidebar {
-    display: block;
-    /* Mostramos la barra lateral */
-    border-right: 1px solid var(--border-color);
-    background-color: var(--surface-color);
-  }
-}
-
 /* Estilos para el componente Header */
 .header-container {
   display: flex;
@@ -855,8 +835,23 @@ body {
 
 .clientes-table {
   width: 100%;
-  border-collapse: collapse;
-  text-align: left;
+  display: block;
+}
+
+.clientes-table thead {
+  display: none;
+}
+
+.clientes-table tbody,
+.clientes-table tr,
+.clientes-table td {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.clientes-table tr {
+  margin-bottom: 1rem;
 }
 
 .clientes-table th,
@@ -893,6 +888,7 @@ body {
 .cuentas-cell {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.5rem;
   align-items: center;
 }
@@ -969,6 +965,10 @@ body {
   justify-content: center;
 }
 
+.action-buttons {
+  justify-content: flex-end;
+}
+
 .action-btn {
   display: inline-flex;
   align-items: center;
@@ -1008,50 +1008,6 @@ body {
   color: var(--text-muted-color);
 }
 
-/* Media query para responsividad en tablas */
-@media (max-width: 768px) {
-  .clientes-table thead {
-    display: none;
-  }
-
-  .clientes-table,
-  .clientes-table tbody,
-  .clientes-table tr,
-  .clientes-table td {
-    display: block;
-    width: 100%;
-  }
-
-  .clientes-table tr {
-    margin-bottom: 1rem;
-  }
-
-  .clientes-table td {
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
-  }
-
-  .clientes-table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 1rem;
-    width: 45%;
-    padding-right: 1rem;
-    text-align: left;
-    font-weight: bold;
-    color: var(--text-color);
-  }
-
-  .action-buttons {
-    justify-content: flex-end;
-  }
-
-  .cuentas-cell {
-    justify-content: flex-end;
-  }
-}
-
 /* --- Estilos para Tooltip genérico --- */
 .tooltip-container {
   position: relative;
@@ -1085,9 +1041,15 @@ body {
   opacity: 1;
 }
 
+/*
+==============================================
+MEDIA QUERIES - ESTILOS RESPONSIVOS
+Aproximación: Mobile First
+==============================================
+*/
 
-/* Media Query para mostrar/ocultar elementos del header */
-@media (min-width: 575px) {
+/* --- Breakpoint: sm (Small devices, 576px y superior) --- */
+@media (min-width: 576px) {
   .header-actions {
     display: flex;
     /* Muestra acciones en escritorio */
@@ -1096,5 +1058,70 @@ body {
   .hamburger-menu {
     display: none;
     /* Oculta hamburguesa en escritorio */
+  }
+}
+
+/* --- Breakpoint: md (Medium devices, 768px y superior) --- */
+@media (min-width: 768px) {
+
+  /* Restaura el layout de la tabla para pantallas medianas y grandes */
+  .clientes-table {
+    display: table;
+    border-collapse: collapse;
+  }
+
+  .clientes-table thead {
+    display: table-header-group;
+    background-color: var(--background-color);
+  }
+
+  .clientes-table tbody {
+    display: table-row-group;
+  }
+
+  .clientes-table tr {
+    display: table-row;
+    margin-bottom: 0;
+  }
+
+  .clientes-table th,
+  .clientes-table td {
+    display: table-cell;
+    width: auto;
+    text-align: left;
+    padding: 1rem;
+    position: static;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .clientes-table th {
+    font-weight: 600;
+    color: var(--text-muted-color);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border-bottom-width: 2px;
+  }
+
+  .clientes-table td::before {
+    display: none;
+    /* Oculta los labels 'data-label' */
+  }
+
+  .action-buttons,
+  .cuentas-cell {
+    justify-content: flex-start;
+  }
+}
+
+/* --- Breakpoint: lg (Large devices, 992px y superior) --- */
+@media (min-width: 992px) {
+
+  /* Cambia el layout principal a 2 columnas */
+  .display-grid {
+    grid-template-columns: 20px 1fr;
+    grid-template-areas:
+      "header  header"
+      "sidebar main"
+      "footer  footer";
   }
 }
