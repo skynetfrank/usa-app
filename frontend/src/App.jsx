@@ -1,14 +1,15 @@
 import { Link, Outlet } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "./actions/userActions";
-import { useState } from "react";
-import { LogIn, LogOut, User, UserPlus, List } from "lucide-react";
+import { useState, useEffect } from "react";
+import { LogIn, LogOut, User, UserPlus, List, X, Menu } from "lucide-react";
 
 function App() {
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const dispatch = useDispatch();
 
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   // Estado para gestionar el tema actual y renderizar el icono correcto
   const [theme, setTheme] = useState(() => document.body.getAttribute("data-theme") || "light");
@@ -16,6 +17,7 @@ function App() {
   const signoutHandler = () => {
     setMenuOpen(false); // Cierra el menú al salir
     dispatch(signout());
+    setMobileMenuOpen(false);
   };
 
   // Sincroniza el atributo del body con el estado del tema
@@ -31,6 +33,15 @@ function App() {
     });
   };
 
+  useEffect(() => {
+    // Bloquear el scroll del body cuando el menú móvil está abierto
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isMobileMenuOpen]);
+
   return (
     <>
       <div className="display-grid">
@@ -41,7 +52,7 @@ function App() {
                 USA App
               </Link>
             </h1>
-            <div className="header-actions">
+            <div className="header-right-actions">
               <button onClick={toggleTheme} className="theme-button icon-button" aria-label="Cambiar tema">
                 {theme === "light" ? (
                   <svg
@@ -82,51 +93,92 @@ function App() {
                 )}
               </button>
 
-              {userInfo ? (
-                <>
-                  <Link
-                    to="/listaclientes"
-                    className="button-primary"
-                    style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-                  >
-                    <List size={18} />
-                    <span>Clientes</span>
+              <div className="header-actions">
+                {userInfo ? (
+                  <>
+                    <Link
+                      to="/listaclientes"
+                      className="button-primary"
+                      style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                    >
+                      <List size={18} />
+                      <span>Clientes</span>
+                    </Link>
+                    <Link
+                      to="/nuevocliente"
+                      className="button-primary"
+                      style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                    >
+                      <UserPlus size={18} />
+                      <span>Nuevo Cliente</span>
+                    </Link>
+                    <div className="user-menu-container">
+                      <button onClick={() => setMenuOpen(!isMenuOpen)} className="user-menu-button">
+                        <span>{userInfo.name}</span>
+                        <div className="avatar">{userInfo.nombre.charAt(0)}</div>
+                      </button>
+                      {isMenuOpen && (
+                        <div className="dropdown-menu">
+                          <Link to="/profile" className="dropdown-item" onClick={() => setMenuOpen(false)}>
+                            <User size={18} />
+                            <span>Ver Perfil</span>
+                          </Link>
+                          <button onClick={signoutHandler} className="dropdown-item">
+                            <LogOut size={18} />
+                            <span>Cerrar Sesión</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <Link to="/signin" className="button-primary" aria-label="Iniciar Sesión">
+                    <LogIn size={18} />
+                    <span>Iniciar Sesión</span>
                   </Link>
-                  <Link
-                    to="/nuevocliente"
-                    className="button-primary"
-                    style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-                  >
-                    <UserPlus size={18} />
-                    <span>Nuevo Cliente</span>
-                  </Link>
-                  <div className="user-menu-container">
-                    <button onClick={() => setMenuOpen(!isMenuOpen)} className="user-menu-button">
-                      <span>{userInfo.name}</span>
-                      <div className="avatar">{userInfo.nombre.charAt(0)}</div>
-                    </button>
-                    {isMenuOpen && (
-                      <div className="dropdown-menu">
-                        <Link to="/profile" className="dropdown-item" onClick={() => setMenuOpen(false)}>
-                          <User size={18} />
-                          <span>Ver Perfil</span>
-                        </Link>
-                        <button onClick={signoutHandler} className="dropdown-item">
-                          <LogOut size={18} />
-                          <span>Cerrar Sesión</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <Link to="/signin" className="theme-button icon-button" aria-label="Iniciar Sesión">
-                  <LogIn size={22} />
-                </Link>
+                )}
+              </div>
+
+              {userInfo && (
+                <button className="hamburger-menu" onClick={() => setMobileMenuOpen(true)} aria-label="Abrir menú">
+                  <Menu size={28} />
+                </button>
               )}
             </div>
           </div>
         </div>
+
+        {isMobileMenuOpen && userInfo && (
+          <div className="mobile-nav">
+            <div className="mobile-nav-header">
+              <div className="mobile-user-info">
+                <div className="avatar">{userInfo.nombre.charAt(0)}</div>
+                <span>{userInfo.name}</span>
+              </div>
+              <button className="close-menu-btn" onClick={() => setMobileMenuOpen(false)} aria-label="Cerrar menú">
+                <X size={32} />
+              </button>
+            </div>
+            <nav className="mobile-nav-links">
+              <Link to="/listaclientes" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
+                <List size={22} />
+                <span>Lista de Clientes</span>
+              </Link>
+              <Link to="/nuevocliente" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
+                <UserPlus size={22} />
+                <span>Nuevo Cliente</span>
+              </Link>
+              <Link to="/profile" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
+                <User size={22} />
+                <span>Ver Perfil</span>
+              </Link>
+              <button onClick={signoutHandler} className="mobile-nav-item">
+                <LogOut size={22} />
+                <span>Cerrar Sesión</span>
+              </button>
+            </nav>
+          </div>
+        )}
 
         <div className="main">
           <div className="main-content">
